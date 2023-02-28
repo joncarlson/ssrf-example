@@ -11,25 +11,13 @@ def granules():
         return render_template('granules.html')
  
     if request.method == 'POST':
+        print(request.form)
+
         return 'hello world'
-        #employee_id = request.form['employee_id']
-        #name = request.form['name']
-        #age = request.form['age']
-        #position = request.form['position']
-        #employee = EmployeeModel(employee_id=employee_id, name=name, age=age, position = position)
-        #db.session.add(employee)
-        #db.session.commit()
-        #return redirect('/data')
 
 @app.route("/granules/<shortname>/<version>")
 def get_collection_granules(shortname, version):
-    #! BAD
-    userInput = "mcmr"
-
-    #! GOOD
-
-    
-    
+    userInput = "cmr"
 
     url = "https://" + userInput + ".earthdata.nasa.gov/search/granules.umm_json?short_name=" + shortname + "&version=" + version
 

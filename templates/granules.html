@@ -16,32 +16,38 @@
     <body class="p-3">
         <h1>Server Side Request Forgery Example</h1>
 
-        <div class="mb-3">
-            <label for="cmr-instance" class="form-label">CMR instance</label>
+        <form action="/" method="post">
+            <div class="mb-3">
+                <label for="cmr-instance" class="form-label">CMR instance</label>
 
-            <div class="input-group">
-                <select class="form-select">
-                    <option selected>Select one...</option>
-                    <option value="cmr">CMR PROD</option>
-                    <option value="cmr.uat">CMR UAT</option>
-                </select>
+                <div class="input-group">
+                    <select name="cmrinstance" class="form-select">
+                        <option selected>Select one...</option>
+                        <option value="cmr">CMR PROD</option>
+                        <option value="cmr.uat">CMR UAT</option>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="input-group mb-3">
-            <label for="shortname" class="form-label">Shortname</label>
+            <div class="input-group mb-3">
+                <label for="shortname" class="form-label">Shortname</label>
 
-            <div class="input-group">
-                <input type="text" class="form-control" />
+                <div class="input-group">
+                    <input type="text" name="shortname" class="form-control" />
+                </div>
             </div>
-        </div>
 
-        <div class="input-group mb-3">
-            <label for="version" class="form-label">Version</label>
+            <div class="input-group mb-3">
+                <label for="version" class="form-label">Version</label>
 
-            <div class="input-group">
-                <input type="text" name="version" class="form-control" />
+                <div class="input-group">
+                    <input type="text" name="version" class="form-control" />
+                </div>
             </div>
-        </div>
+
+            <div class="input-group mb-3">
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </div>
+        </form>
     </body>
 </html>
