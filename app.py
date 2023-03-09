@@ -1,15 +1,13 @@
 import json
-import logging
 import os
 import ssl
 from urllib.request import urlopen
-from xml.dom import pulldom
 
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+from subscriber.parse import parse_location
 
-logging.basicConfig(level=logging.INFO)
+app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,30 +34,20 @@ def get_collection_granules(shortname, version):
     return data
 
 
-@app.route("/<environment>/collections/<shortname>/<version>")
-def get_location(environment, shortname, version):
+@app.route("/test/<shortname>/<version>")
+def test_location(shortname, version):
+    environment = request.args.get('environment') or 'cmr'
     url = f'https://{environment}.earthdata.nasa.gov/search/collections.xml?short_name={shortname}&version={version}'
 
-    response = urlopen(url, context=ssl._create_unverified_context())
+    return url
 
-    doc = pulldom.parse(response)
 
-    isLocation = False
-    locations = []
+@app.route("/collections/<shortname>/<version>")
+def get_location(shortname, version):
+    environment = request.args.get('environment')
+    url = f'https://{environment}.earthdata.nasa.gov/search/collections.xml?short_name={shortname}&version={version}'
 
-    for event, node in doc:
-        if event == pulldom.END_ELEMENT and node.tagName == 'location':
-            isLocation = False
-
-        if event == pulldom.START_ELEMENT and node.tagName == 'location':
-            isLocation = True
-
-        if event == pulldom.CHARACTERS and isLocation:
-            logging.info(f"Adding location {node.nodeValue}")
-
-            locations.append(node.nodeValue)
-
-    return locations
+    return '\n'.join(parse_location(urlopen(url)))
 
 
 if __name__ == "__main__":
