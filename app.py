@@ -3,8 +3,9 @@ import os
 import ssl
 from urllib.request import urlopen
 
-from flask import Flask, render_template, request
+from flask import Flask, abort, render_template, request
 
+from lib.allow_list import is_allowed_url
 from subscriber.parse import parse_location
 
 app = Flask(__name__)
@@ -46,6 +47,9 @@ def test_location(shortname, version):
 def get_location(shortname, version):
     environment = request.args.get('environment')
     url = f'https://{environment}.earthdata.nasa.gov/search/collections.xml?short_name={shortname}&version={version}'
+
+    # if not is_allowed_url(url):
+    #     abort(403)
 
     return '\n'.join(parse_location(urlopen(url)))
 
